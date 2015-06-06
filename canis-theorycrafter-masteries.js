@@ -10,6 +10,11 @@
 		- Chargement de la page en cookie
 		- Gestion des stats primaires
 	
+	V1.1 02/06/2015
+		Fonctions
+		- Ajout de la fonction d'importation des pages
+		Bugs
+		- Résolution (moisie) du problème de clearPage
 	
 	Nécessite une balise #bg-mast et #mast_button
 */
@@ -17,6 +22,7 @@ if(typeof Canis.LoL.TheoryCrafter.Masteries == 'undefined') Canis.LoL.TheoryCraf
 
 	//Initialiser la bibliothèque
 	var ALL_MAST;
+	
 	
 	
 	//Initialiser la page
@@ -31,7 +37,8 @@ if(typeof Canis.LoL.TheoryCrafter.Masteries == 'undefined') Canis.LoL.TheoryCraf
 	var EMPTY_MASTERIES_PAGE={"name":"Page masteries","total":0,"Offense":0,"Defense":0,"Utility":0,"masteries":{}};
 	
 	
-	
+	//Pages importées
+	var ALL_MAST_PAGES={};
 	
 	function construct() {
 		a.documentReady(initialize);
@@ -54,8 +61,12 @@ if(typeof Canis.LoL.TheoryCrafter.Masteries == 'undefined') Canis.LoL.TheoryCraf
 		$("#bg-mast").append('<div id="mast_offense">ATTAQUE : <span id="mast_offense_count">0</span></div>');
 		$("#bg-mast").append('<div id="mast_defense">DEFENSE : <span id="mast_defense_count">0</span></div>');
 		$("#bg-mast").append('<div id="mast_utility">UTILITAIRE : <span id="mast_utility_count">0</span></div>');
-		$("#mast_buttons").append('<button class="clear_mast_page btn btn-default">Effacer</button>');
-		$("#mast_buttons").append('<button class="save_mast_page btn btn-default">Sauvegarder</button>');
+		$("#mast_buttons").append('<br /><button class="clear_mast_page btn btn-default">Effacer</button><br /><br />');
+		$("#mast_buttons").append('<button class="save_mast_page btn btn-default">Sauver</button>');
+		$("#mast_imports").append('<br /><select id="servor_select_masteries" class="form-control"><option value="euw">EUW</option><option value="na">NA</option><option value="eune">EUNE</option><option value="br">BR</option><option value="lan">LAN</option><option value="las">LAS</option><option value="oce">OCE</option></select><br />');
+		$("#mast_imports").append('<input type="text" class="form-control" id="summoner_select_masteries" placeholder="Invocateur" maxlength="20"><br />');
+		$("#mast_imports").append('<button class="import_masteries btn btn-default">Importer</button><br /><br />');
+		$("#mast_imports").append('<div id="mast_pages_list"></div>');
 		$.ajax({
 			url: Canis.LoL.TheoryCrafter.getQuery()+"index.php/tc/getMasteries",
 			success:function(data){
@@ -132,6 +143,8 @@ if(typeof Canis.LoL.TheoryCrafter.Masteries == 'undefined') Canis.LoL.TheoryCraf
 		$(document).on("mousedown",".clear_mast_page",function(e){
 			
 			clearMasteryPage();
+			clearMasteryPage();
+			clearMasteryPage();
 			
 		});
 		
@@ -139,6 +152,24 @@ if(typeof Canis.LoL.TheoryCrafter.Masteries == 'undefined') Canis.LoL.TheoryCraf
 		$(document).on("click",".save_mast_page",function(e){
 			
 			savePage();
+			
+		});
+		
+		
+		$(document).on("click",".import_masteries",function(e){
+			
+			importMasteries();
+			
+		});
+		
+		
+		$(document).on("click",".mastery_page_button",function(e){
+			
+			clearMasteryPage();
+			clearMasteryPage();
+			clearMasteryPage();
+			
+			constructSavedPage(ALL_MAST_PAGES[$(e.target).data("page")]);
 			
 		});
 	}
@@ -367,6 +398,46 @@ if(typeof Canis.LoL.TheoryCrafter.Masteries == 'undefined') Canis.LoL.TheoryCraf
 			
 		}
 		
+	}
+	
+	
+	//Importe les maîtrises d'un invocateur
+	function importMasteries(){
+		
+		var servor=$("#servor_select_masteries").val();
+		var summ=$("#summoner_select_masteries").val();
+		
+		$.ajax({
+			url: Canis.LoL.TheoryCrafter.getQuery()+"index.php/tc/getMasteriesFromSummoner",
+			method:"POST",
+			data:{
+				"servor":servor,
+				"summoner":summ
+			},
+			success:function(data){
+				data=JSON.parse(data);
+				console.log(data);
+				
+				for(var i in data){
+					$("#mast_pages_list").append('<button class="btn  btn-default mastery_page_button" data-page="'+data[i]['id']+'">'+data[i]['name']+'</button>');
+					ALL_MAST_PAGES[data[i]['id']]={};
+					ALL_MAST_PAGES[data[i]['id']]['masteries']={};
+					if(data[i]['masteries']!=null){
+						data[i]['masteries'].sort(sortMasteries);
+						for(var j in data[i]['masteries']){
+							ALL_MAST_PAGES[data[i]['id']]['masteries'][data[i]['masteries'][j]['id']]=data[i]['masteries'][j]['rank'];
+						}
+					}
+				}
+				console.log(ALL_MAST_PAGES);
+			}
+		});
+		
+	}
+	
+	function sortMasteries(a,b){
+		
+		return (a['id'] > b['id']) ? 1 : -1;
 	}
 
 

@@ -6,6 +6,10 @@
 		- Construit l'application des items
 		- Ajout et retrait des items
 		- Gestion des stats
+		
+	01/06/2015
+		- Correction d'un bug sur l'équipement qui ne se vidait pas
+		- Ajout de la mise à jour des sorts lors du changement d'équipement
 	
 	Nécessite divisions #items_list, #tags_list, #selected_items et #selected_trinket
 */
@@ -196,6 +200,10 @@ if(typeof Canis.LoL.TheoryCrafter.Items == 'undefined') Canis.LoL.TheoryCrafter.
 	
 		var items=JSON.parse(ALL_ITEMS);
 		
+		ITEMS_STATS=Canis.LoL.TheoryCrafter.getBaseStats();
+		
+		var select_items={};
+		
 		$(".selected_item").each(function(){
 		
 			for(var j in JSON.parse(items[$(this).data("id")]['stats'])){
@@ -204,9 +212,23 @@ if(typeof Canis.LoL.TheoryCrafter.Items == 'undefined') Canis.LoL.TheoryCrafter.
 				
 			}
 			
+			select_items[$(this).data("id")]=0;
+			
 		});
 		
+		for(var k in select_items){
+		
+			for(var l in JSON.parse(items[k]['unique'])){
+			
+				ITEMS_STATS[l]+=JSON.parse(items[k]['unique'])[l];
+				
+			}
+			
+		}
+		
 		Canis.LoL.TheoryCrafter.updateItemsStats(ITEMS_STATS);
+		
+		Canis.LoL.TheoryCrafter.Champions.updateSpells();
 		
 	}
 	

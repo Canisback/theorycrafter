@@ -7,6 +7,19 @@
 		- Appel des scripts des application Masteries, Runes, Items et Champions
 		- Mise à jour des stats
 		
+	01/06/205
+		- Ajout de la fonction getBaseStats()
+		- Correction des calculs de régénération des MP et HP
+		- Ajout du script GA
+	
+	03/06/2015
+		- Ajout des exceptions pour Ashe et Azir
+		
+	04/06/2015
+		- Ajout des exceptions pour Diana et Galio
+		
+	06/06/2015
+		- Ajout de la fonction growthFormula et correction du calcul des stats de base par niveau
 	
 	Fonctionne avec JQuery et Bootstrap
 	
@@ -28,9 +41,9 @@ if(typeof Canis.LoL.TheoryCrafter == 'undefined') Canis.LoL.TheoryCrafter = new 
 	var URL_QUERY_BASE = 'http://canisback.com/tc/';
 	var URL_TOOLTIPS_SCRIPT = 'http://canisback.com/tooltips/';
 	
-	var DDRAGON="5.8.1";
+	var DDRAGON="5.10.1";
 	
-	var BASE_STATS={"rFlatArmorModPerLevel":0,"rFlatArmorPenetrationMod":0,"rFlatArmorPenetrationModPerLevel":0,"rFlatCritChanceModPerLevel":0,"rFlatCritDamageModPerLevel":0,"rFlatEnergyRegenModPerLevel":0,"rFlatDodgeMod":0,"rFlatDodgeModPerLevel":0,"rFlatGoldPer10Mod":0,"rFlatHPModPerLevel":0,"rFlatHPRegenModPerLevel":0,"rFlatMPRegenModPerLevel":0,"rFlatMagicDamageModPerLevel":0,"rFlatMagicPenetrationMod":0,"rFlatMagicPenetrationModPerLevel":0,"rFlatMPModPerLevel":0,"rFlatEnergyModPerLevel":0,"rFlatMovementSpeedModPerLevel":0,"rFlatPhysicalDamageModPerLevel":0,"rFlatSpellBlockModPerLevel":0,"rFlatTimeDeadMod":0,"rFlatTimeDeadModPerLevel":0,"rPercentArmorPenetrationMod":0,"rPercentArmorPenetrationModPerLevel":0,"rPercentAttackSpeedModPerLevel":0,"rPercentCooldownMod":0,"rPercentCooldownModPerLevel":0,"rPercentMagicPenetrationMod":0,"rPercentMagicPenetrationModPerLevel":0,"rPercentMovementSpeedModPerLevel":0,"rPercentTimeDeadMod":0,"rPercentTimeDeadModPerLevel":0,"FlatArmorMod":0,"FlatAttackSpeedMod":0,"FlatBlockMod":0,"FlatCritChanceMod":0,"FlatCritDamageMod":0,"FlatEnergyRegenMod":0,"FlatEnergyPoolMod":0,"FlatEXPBonus":0,"FlatHPPoolMod":0,"FlatHPRegenMod":0,"FlatMPPoolMod":0,"FlatMPRegenMod":0,"FlatMagicDamageMod":0,"FlatMovementSpeedMod":0,"FlatPhysicalDamageMod":0,"FlatSpellBlockMod":0,"PercentArmorMod":0,"PercentAttackSpeedMod":0,"PercentBlockMod":0,"PercentCritChanceMod":0,"PercentCritDamageMod":0,"PercentDodgeMod":0,"PercentEXPBonus":0,"PercentHPPoolMod":0,"PercentHPRegenMod":0,"PercentMPPoolMod":0,"PercentMPRegenMod":0,"PercentMagicDamageMod":0,"PercentMovementSpeedMod":0,"PercentPhysicalDamageMod":0,"PercentSpellBlockMod":0,"PercentSpellVampMod":0,"PercentLifeStealMod":0,"PercentBonusPhysicalDamage":0,"rPercentBonusArmorMod":0,"rPercentBonusSpellBlockMod":0,"TenacityMod":0};
+	var BASE_STATS='{"rFlatArmorModPerLevel":0,"rFlatArmorPenetrationMod":0,"rFlatArmorPenetrationModPerLevel":0,"rFlatCritChanceModPerLevel":0,"rFlatCritDamageModPerLevel":0,"rFlatEnergyRegenModPerLevel":0,"rFlatDodgeMod":0,"rFlatDodgeModPerLevel":0,"rFlatGoldPer10Mod":0,"rFlatHPModPerLevel":0,"rFlatHPRegenModPerLevel":0,"rFlatMPRegenModPerLevel":0,"rFlatMagicDamageModPerLevel":0,"rFlatMagicPenetrationMod":0,"rFlatMagicPenetrationModPerLevel":0,"rFlatMPModPerLevel":0,"rFlatEnergyModPerLevel":0,"rFlatMovementSpeedModPerLevel":0,"rFlatPhysicalDamageModPerLevel":0,"rFlatSpellBlockModPerLevel":0,"rFlatTimeDeadMod":0,"rFlatTimeDeadModPerLevel":0,"rPercentArmorPenetrationMod":0,"rPercentArmorPenetrationModPerLevel":0,"rPercentAttackSpeedModPerLevel":0,"rPercentCooldownMod":0,"rPercentCooldownModPerLevel":0,"rPercentMagicPenetrationMod":0,"rPercentMagicPenetrationModPerLevel":0,"rPercentMovementSpeedModPerLevel":0,"rPercentTimeDeadMod":0,"rPercentTimeDeadModPerLevel":0,"FlatArmorMod":0,"FlatAttackSpeedMod":0,"FlatBlockMod":0,"FlatCritChanceMod":0,"FlatCritDamageMod":0,"FlatEnergyRegenMod":0,"FlatEnergyPoolMod":0,"FlatEXPBonus":0,"FlatHPPoolMod":0,"FlatHPRegenMod":0,"FlatMPPoolMod":0,"FlatMPRegenMod":0,"FlatMagicDamageMod":0,"FlatMovementSpeedMod":0,"FlatPhysicalDamageMod":0,"FlatSpellBlockMod":0,"PercentArmorMod":0,"PercentAttackSpeedMod":0,"PercentBlockMod":0,"PercentCritChanceMod":0,"PercentCritDamageMod":0,"PercentDodgeMod":0,"PercentEXPBonus":0,"PercentHPPoolMod":0,"PercentHPRegenMod":0,"PercentMPPoolMod":0,"PercentMPRegenMod":0,"PercentMagicDamageMod":0,"PercentMovementSpeedMod":0,"PercentPhysicalDamageMod":0,"PercentSpellBlockMod":0,"PercentSpellVampMod":0,"PercentLifeStealMod":0,"PercentBonusPhysicalDamage":0,"rPercentBonusArmorMod":0,"rPercentBonusSpellBlockMod":0,"TenacityMod":0,"ashepassive":0}';
 	
 	//Initialisation des stats
 	var ITEMS_STATS={"rFlatArmorModPerLevel":0,"rFlatArmorPenetrationMod":0,"rFlatArmorPenetrationModPerLevel":0,"rFlatCritChanceModPerLevel":0,"rFlatCritDamageModPerLevel":0,"rFlatEnergyRegenModPerLevel":0,"rFlatDodgeMod":0,"rFlatDodgeModPerLevel":0,"rFlatGoldPer10Mod":0,"rFlatHPModPerLevel":0,"rFlatHPRegenModPerLevel":0,"rFlatMPRegenModPerLevel":0,"rFlatMagicDamageModPerLevel":0,"rFlatMagicPenetrationMod":0,"rFlatMagicPenetrationModPerLevel":0,"rFlatMPModPerLevel":0,"rFlatEnergyModPerLevel":0,"rFlatMovementSpeedModPerLevel":0,"rFlatPhysicalDamageModPerLevel":0,"rFlatSpellBlockModPerLevel":0,"rFlatTimeDeadMod":0,"rFlatTimeDeadModPerLevel":0,"rPercentArmorPenetrationMod":0,"rPercentArmorPenetrationModPerLevel":0,"rPercentAttackSpeedModPerLevel":0,"rPercentCooldownMod":0,"rPercentCooldownModPerLevel":0,"rPercentMagicPenetrationMod":0,"rPercentMagicPenetrationModPerLevel":0,"rPercentMovementSpeedModPerLevel":0,"rPercentTimeDeadMod":0,"rPercentTimeDeadModPerLevel":0,"FlatArmorMod":0,"FlatAttackSpeedMod":0,"FlatBlockMod":0,"FlatCritChanceMod":0,"FlatCritDamageMod":0,"FlatEnergyRegenMod":0,"FlatEnergyPoolMod":0,"FlatEXPBonus":0,"FlatHPPoolMod":0,"FlatHPRegenMod":0,"FlatMPPoolMod":0,"FlatMPRegenMod":0,"FlatMagicDamageMod":0,"FlatMovementSpeedMod":0,"FlatPhysicalDamageMod":0,"FlatSpellBlockMod":0,"PercentArmorMod":0,"PercentAttackSpeedMod":0,"PercentBlockMod":0,"PercentCritChanceMod":0,"PercentCritDamageMod":0,"PercentDodgeMod":0,"PercentEXPBonus":0,"PercentHPPoolMod":0,"PercentHPRegenMod":0,"PercentMPPoolMod":0,"PercentMPRegenMod":0,"PercentMagicDamageMod":0,"PercentMovementSpeedMod":0,"PercentPhysicalDamageMod":0,"PercentSpellBlockMod":0,"PercentSpellVampMod":0,"PercentLifeStealMod":0,"TenacityMod":0};
@@ -41,9 +54,11 @@ if(typeof Canis.LoL.TheoryCrafter == 'undefined') Canis.LoL.TheoryCrafter = new 
 	
 	var CHAMPION_STATS;
 	
-	var TOTAL_STATS={"rFlatArmorModPerLevel":0,"rFlatArmorPenetrationMod":0,"rFlatArmorPenetrationModPerLevel":0,"rFlatCritChanceModPerLevel":0,"rFlatCritDamageModPerLevel":0,"rFlatEnergyRegenModPerLevel":0,"rFlatDodgeMod":0,"rFlatDodgeModPerLevel":0,"rFlatGoldPer10Mod":0,"rFlatHPModPerLevel":0,"rFlatHPRegenModPerLevel":0,"rFlatMPRegenModPerLevel":0,"rFlatMagicDamageModPerLevel":0,"rFlatMagicPenetrationMod":0,"rFlatMagicPenetrationModPerLevel":0,"rFlatMPModPerLevel":0,"rFlatEnergyModPerLevel":0,"rFlatMovementSpeedModPerLevel":0,"rFlatPhysicalDamageModPerLevel":0,"rFlatSpellBlockModPerLevel":0,"rFlatTimeDeadMod":0,"rFlatTimeDeadModPerLevel":0,"rPercentArmorPenetrationMod":0,"rPercentArmorPenetrationModPerLevel":0,"rPercentAttackSpeedModPerLevel":0,"rPercentCooldownMod":0,"rPercentCooldownModPerLevel":0,"rPercentMagicPenetrationMod":0,"rPercentMagicPenetrationModPerLevel":0,"rPercentMovementSpeedModPerLevel":0,"rPercentTimeDeadMod":0,"rPercentTimeDeadModPerLevel":0,"FlatArmorMod":0,"FlatAttackSpeedMod":0,"FlatBlockMod":0,"FlatCritChanceMod":0,"FlatCritDamageMod":0,"FlatEnergyRegenMod":0,"FlatEnergyPoolMod":0,"FlatEXPBonus":0,"FlatHPPoolMod":0,"FlatHPRegenMod":0,"FlatMPPoolMod":0,"FlatMPRegenMod":0,"FlatMagicDamageMod":0,"FlatMovementSpeedMod":0,"FlatPhysicalDamageMod":0,"FlatSpellBlockMod":0,"PercentArmorMod":0,"PercentAttackSpeedMod":0,"PercentBlockMod":0,"PercentCritChanceMod":0,"PercentCritDamageMod":0,"PercentDodgeMod":0,"PercentEXPBonus":0,"PercentHPPoolMod":0,"PercentHPRegenMod":0,"PercentMPPoolMod":0,"PercentMPRegenMod":0,"PercentMagicDamageMod":0,"PercentMovementSpeedMod":0,"PercentPhysicalDamageMod":0,"PercentSpellBlockMod":0,"PercentSpellVampMod":0,"PercentLifeStealMod":0,"PercentBonusPhysicalDamage":0,"rPercentBonusArmorMod":0,"rPercentBonusSpellBlockMod":0,"TenacityMod":0};
+	var TOTAL_STATS={"rFlatArmorModPerLevel":0,"rFlatArmorPenetrationMod":0,"rFlatArmorPenetrationModPerLevel":0,"rFlatCritChanceModPerLevel":0,"rFlatCritDamageModPerLevel":0,"rFlatEnergyRegenModPerLevel":0,"rFlatDodgeMod":0,"rFlatDodgeModPerLevel":0,"rFlatGoldPer10Mod":0,"rFlatHPModPerLevel":0,"rFlatHPRegenModPerLevel":0,"rFlatMPRegenModPerLevel":0,"rFlatMagicDamageModPerLevel":0,"rFlatMagicPenetrationMod":0,"rFlatMagicPenetrationModPerLevel":0,"rFlatMPModPerLevel":0,"rFlatEnergyModPerLevel":0,"rFlatMovementSpeedModPerLevel":0,"rFlatPhysicalDamageModPerLevel":0,"rFlatSpellBlockModPerLevel":0,"rFlatTimeDeadMod":0,"rFlatTimeDeadModPerLevel":0,"rPercentArmorPenetrationMod":0,"rPercentArmorPenetrationModPerLevel":0,"rPercentAttackSpeedModPerLevel":0,"rPercentCooldownMod":0,"rPercentCooldownModPerLevel":0,"rPercentMagicPenetrationMod":0,"rPercentMagicPenetrationModPerLevel":0,"rPercentMovementSpeedModPerLevel":0,"rPercentTimeDeadMod":0,"rPercentTimeDeadModPerLevel":0,"FlatArmorMod":0,"FlatAttackSpeedMod":0,"FlatBlockMod":0,"FlatCritChanceMod":0,"FlatCritDamageMod":0,"FlatEnergyRegenMod":0,"FlatEnergyPoolMod":0,"FlatEXPBonus":0,"FlatHPPoolMod":0,"FlatHPRegenMod":0,"FlatMPPoolMod":0,"FlatMPRegenMod":0,"FlatMagicDamageMod":0,"FlatMovementSpeedMod":0,"FlatPhysicalDamageMod":0,"FlatSpellBlockMod":0,"PercentArmorMod":0,"PercentAttackSpeedMod":0,"PercentBlockMod":0,"PercentCritChanceMod":0,"PercentCritDamageMod":0,"PercentDodgeMod":0,"PercentEXPBonus":0,"PercentHPPoolMod":0,"PercentHPRegenMod":0,"PercentMPPoolMod":0,"PercentMPRegenMod":0,"PercentMagicDamageMod":0,"PercentMovementSpeedMod":0,"PercentPhysicalDamageMod":0,"PercentSpellBlockMod":0,"PercentSpellVampMod":0,"PercentLifeStealMod":0,"PercentBonusPhysicalDamage":0,"rPercentBonusArmorMod":0,"rPercentBonusSpellBlockMod":0,"TenacityMod":0,"ashepassive":0};
 	
 	var CHAMPION_LEVEL;
+	
+	var CHAMPION_ID;
 	
 	//Traductions
 	var EFFECTS_RUNES_TRANSLATE={"rFlatArmorModPerLevel":"Armure /niveau","rFlatArmorPenetrationMod":"Pénétration d'armure","rFlatArmorPenetrationModPerLevel":"Pénétration d'armure /niveau","rFlatCritChanceModPerLevel":"Crit. chance /niveau","rFlatCritDamageModPerLevel":"Dommage Crit. /niveau","rFlatEnergyRegenModPerLevel":"Régèn énergie /niveau","rFlatDodgeMod":"Esquive","rFlatDodgeModPerLevel":"Esquive /niveau","rFlatGoldPer10Mod":"Or/10s","rFlatHPModPerLevel":"PV /niveau","rFlatHPRegenModPerLevel":"Régèn PV /niveau","rFlatMPRegenModPerLevel":"Régén mana /niveau","rFlatMagicDamageModPerLevel":"Puissance /niveau","rFlatMagicPenetrationMod":"Pénétration magique","rFlatMagicPenetrationModPerLevel":"Pénétration magique /niveau","rFlatMPModPerLevel":"Mana /niveau","rFlatEnergyModPerLevel":"Energie /niveau","rFlatMovementSpeedModPerLevel":"Vitesse de déplacement /niveau","rFlatPhysicalDamageModPerLevel":"Dommages /niveau","rFlatSpellBlockModPerLevel":"Résistance magique /niveau","rFlatTimeDeadMod":"Réduction temps mort","rFlatTimeDeadModPerLevel":"Réduction temps mort /niveau","rPercentArmorPenetrationMod":"% Pénetration d'armure","rPercentArmorPenetrationModPerLevel":"% Pénetration d'armure /niveau","rPercentAttackSpeedModPerLevel":"% Vitesse d'attaque /niveau","rPercentCooldownMod":"% Réduction des délais","rPercentCooldownModPerLevel":"% Réduction des délais /niveau","rPercentMagicPenetrationMod":"% Pénetration magique","rPercentMagicPenetrationModPerLevel":"% Pénetration magique /niveau","rPercentMovementSpeedModPerLevel":"% Vitesse de déplacement /niveau","rPercentTimeDeadMod":"% Réduction temps mort","rPercentTimeDeadModPerLevel":"% Réduction temps mort /niveau","FlatArmorMod":"Armure","FlatAttackSpeedMod":"Vitesse d'attaque","FlatBlockMod":0,"FlatCritChanceMod":"Chance Crit.","FlatCritDamageMod":"Dommage Crit.","FlatEnergyRegenMod":"Régèn énergie","FlatEnergyPoolMod":"Energie","FlatEXPBonus":"Bonus XP","FlatHPPoolMod":"PV","FlatHPRegenMod":"Régèn PV","FlatMPPoolMod":"Mana","FlatMPRegenMod":"Régèn mana","FlatMagicDamageMod":"Puissance","FlatMovementSpeedMod":"Vitesse de déplacement","FlatPhysicalDamageMod":"Dommages","FlatSpellBlockMod":"Résistance magique","PercentArmorMod":"% Armure","PercentAttackSpeedMod":"% Vitesse d'attaque","PercentBlockMod":0,"PercentCritChanceMod":"% Crit. Chance","PercentCritDamageMod":"% Dommages Crit.","PercentDodgeMod":"% Esquive","PercentEXPBonus":"% Bonus XP","PercentHPPoolMod":"% PV","PercentHPRegenMod":"% Régèn PV","PercentMPPoolMod":"% Mana","PercentMPRegenMod":"% Régèn mana","PercentMagicDamageMod":"% Puissance","PercentMovementSpeedMod":"% Vitesse de déplacement","PercentPhysicalDamageMod":"% Dommages","PercentSpellBlockMod":"% Résistance magique","PercentSpellVampMod":"% Sort vampirique","PercentLifeStealMod":"% Vol de vie"};
@@ -66,6 +81,7 @@ if(typeof Canis.LoL.TheoryCrafter == 'undefined') Canis.LoL.TheoryCrafter = new 
 		setTimeout(startRunesApp, 1);
 		setTimeout(startItemsApp, 1);
 		setTimeout(startChampionsApp, 1);
+		setTimeout(getAnalytics, 1);
 	}
 	
 	function getCss() {
@@ -121,11 +137,24 @@ if(typeof Canis.LoL.TheoryCrafter == 'undefined') Canis.LoL.TheoryCrafter = new 
 		$.getScript(url + 'application/views/tc/canis-theorycrafter-champions.js');
 	}
 	
+	function getAnalytics(){
+	
+		var url = URL_QUERY_BASE;
+		
+		$.getScript(url + 'application/views/tc/google-analytics.js');
+	}
+	
 	
 	function getDDragon(){
 		return DDRAGON;
 	}
 	this.getDDragon=getDDragon;
+	
+	
+	function getBaseStats(){
+		return JSON.parse(BASE_STATS);
+	}
+	this.getBaseStats=getBaseStats;
 	
 	
 	function getMasteriesStats(){
@@ -217,13 +246,19 @@ if(typeof Canis.LoL.TheoryCrafter == 'undefined') Canis.LoL.TheoryCrafter = new 
 	this.updateChampionLevel=updateChampionLevel;
 	
 	
+	function updateChampionId(data){
+		CHAMPION_ID=data;
+	}
+	this.updateChampionId=updateChampionId;
+	
 	//Mise à jour et affichage des stats
 	function updateStats(){
+	
 	
 		if(CHAMPION_STATS!=null){
 		
 			//Armure
-			TOTAL_STATS['base_armor']=(parseFloat(CHAMPION_STATS["armor"])+(CHAMPION_LEVEL*parseFloat(CHAMPION_STATS["armorperlevel"]))).toFixed(2);
+			TOTAL_STATS['base_armor']=(parseFloat(CHAMPION_STATS["armor"])+growthFormula(parseFloat(CHAMPION_STATS["armorperlevel"])));
 			TOTAL_STATS['bonus_armor']=
 				(
 					ITEMS_STATS['FlatArmorMod']
@@ -238,7 +273,7 @@ if(typeof Canis.LoL.TheoryCrafter == 'undefined') Canis.LoL.TheoryCrafter = new 
 			
 			
 			//Dommages
-			TOTAL_STATS['base_attackdamage']=(parseFloat(CHAMPION_STATS["attackdamage"])+(CHAMPION_LEVEL*parseFloat(CHAMPION_STATS["attackdamageperlevel"]))).toFixed(2);
+			TOTAL_STATS['base_attackdamage']=parseFloat(parseFloat(CHAMPION_STATS["attackdamage"])+growthFormula(parseFloat(CHAMPION_STATS["attackdamageperlevel"])));
 			TOTAL_STATS['bonus_attackdamage']=
 				ITEMS_STATS['FlatPhysicalDamageMod']
 				+RUNES_STATS['FlatPhysicalDamageMod']
@@ -264,9 +299,7 @@ if(typeof Canis.LoL.TheoryCrafter == 'undefined') Canis.LoL.TheoryCrafter = new 
 				0.625/(
 					1+parseFloat(CHAMPION_STATS["attackspeedoffset"])
 				)+(
-					(CHAMPION_LEVEL)
-					*
-					parseFloat(CHAMPION_STATS["attackspeedperlevel"])
+					growthFormula(parseFloat(CHAMPION_STATS["attackspeedperlevel"]))
 				)
 				*
 				0.625/(
@@ -302,7 +335,7 @@ if(typeof Canis.LoL.TheoryCrafter == 'undefined') Canis.LoL.TheoryCrafter = new 
 			
 			
 			//Points de vie
-			TOTAL_STATS['base_hp']=(parseFloat(CHAMPION_STATS["hp"])+(CHAMPION_LEVEL*parseFloat(CHAMPION_STATS["hpperlevel"]))).toFixed(2);
+			TOTAL_STATS['base_hp']=(parseFloat(CHAMPION_STATS["hp"])+growthFormula(parseFloat(CHAMPION_STATS["hpperlevel"])));
 			TOTAL_STATS['bonus_hp']=
 				(
 					ITEMS_STATS['FlatHPPoolMod']
@@ -323,7 +356,7 @@ if(typeof Canis.LoL.TheoryCrafter == 'undefined') Canis.LoL.TheoryCrafter = new 
 			
 			
 			//Régèn points de vie
-			TOTAL_STATS['base_hpregen']=(parseFloat(CHAMPION_STATS["hpregen"])+(CHAMPION_LEVEL*parseFloat(CHAMPION_STATS["hpregenperlevel"]))).toFixed(2);
+			TOTAL_STATS['base_hpregen']=(parseFloat(CHAMPION_STATS["hpregen"])+growthFormula(parseFloat(CHAMPION_STATS["hpregenperlevel"])));
 			TOTAL_STATS['bonus_hpregen']=
 				(
 					ITEMS_STATS['FlatHPRegenMod']
@@ -332,10 +365,14 @@ if(typeof Canis.LoL.TheoryCrafter == 'undefined') Canis.LoL.TheoryCrafter = new 
 					+(
 						ITEMS_STATS['rFlatHPRegenModPerLevel']
 						+RUNES_STATS['rFlatHPRegenModPerLevel']
+						+MASTERIES_STATS['rFlatHPRegenModPerLevel']
 					)*(CHAMPION_LEVEL)
-				)*(
+				)
+				+TOTAL_STATS['base_hpregen']
+				*(
 					ITEMS_STATS['PercentHPRegenMod']
 					+RUNES_STATS['PercentHPRegenMod']
+					+MASTERIES_STATS['PercentHPRegenMod']
 				);
 			
 			
@@ -378,7 +415,7 @@ if(typeof Canis.LoL.TheoryCrafter == 'undefined') Canis.LoL.TheoryCrafter = new 
 			
 			
 			//Ressource
-			TOTAL_STATS['base_mp']=(parseFloat(CHAMPION_STATS["mp"])+(CHAMPION_LEVEL*parseFloat(CHAMPION_STATS["mpperlevel"]))).toFixed(2);
+			TOTAL_STATS['base_mp']=(parseFloat(CHAMPION_STATS["mp"])+growthFormula(parseFloat(CHAMPION_STATS["mpperlevel"])));
 			TOTAL_STATS['bonus_mp']=0;
 			if(CHAMPION_STATS["partype"]=="Mana"){
 				TOTAL_STATS['bonus_mp']=
@@ -404,7 +441,7 @@ if(typeof Canis.LoL.TheoryCrafter == 'undefined') Canis.LoL.TheoryCrafter = new 
 			
 			
 			//Régèn ressource
-			TOTAL_STATS['base_mpregen']=(parseFloat(CHAMPION_STATS["mpregen"])+(CHAMPION_LEVEL*parseFloat(CHAMPION_STATS["mpregenperlevel"]))).toFixed(2);
+			TOTAL_STATS['base_mpregen']=(parseFloat(CHAMPION_STATS["mpregen"])+growthFormula(parseFloat(CHAMPION_STATS["mpregenperlevel"])));
 			TOTAL_STATS['bonus_mpregen']=0;
 			if(CHAMPION_STATS["partype"]=="Mana"){
 				TOTAL_STATS['bonus_mpregen']=
@@ -416,7 +453,11 @@ if(typeof Canis.LoL.TheoryCrafter == 'undefined') Canis.LoL.TheoryCrafter = new 
 						+RUNES_STATS['rFlatMPRegenModPerLevel']
 						+MASTERIES_STATS['rFlatMPRegenModPerLevel']
 					)*(CHAMPION_LEVEL)
-					+ITEMS_STATS['PercentMPRegenMod']
+					+(
+						ITEMS_STATS['PercentMPRegenMod']
+						+RUNES_STATS['PercentMPRegenMod']
+						+MASTERIES_STATS['PercentMPRegenMod']
+					)
 					*TOTAL_STATS['base_mpregen'];
 			}else if(CHAMPION_STATS["partype"]=="Energy"){
 				TOTAL_STATS['bonus_mpregen']=ITEMS_STATS['FlatEnergyRegenMod']+RUNES_STATS['FlatEnergyRegenMod']+(ITEMS_STATS['rFlatEnergyRegenModPerLevel']+RUNES_STATS['rFlatEnergyRegenModPerLevel'])*(CHAMPION_LEVEL);
@@ -531,7 +572,7 @@ if(typeof Canis.LoL.TheoryCrafter == 'undefined') Canis.LoL.TheoryCrafter = new 
 					+parseFloat(RUNES_STATS['rFlatCritDamageModPerLevel'])
 				)*(CHAMPION_LEVEL);
 				
-			$("#dcc").html((100+(parseFloat(TOTAL_STATS['bonus_critdamage'])*100)).toFixed(1)+"%");
+			$("#dcc").html((200+(parseFloat(TOTAL_STATS['bonus_critdamage'])*100)).toFixed(1)+"%");
 			
 			
 			//Vol de vie
@@ -577,12 +618,213 @@ if(typeof Canis.LoL.TheoryCrafter == 'undefined') Canis.LoL.TheoryCrafter = new 
 			$("#tenacity").html((parseFloat(TOTAL_STATS['bonus_tenacity'])*100).toFixed(0)+"%");
 			
 			
+			//Passif de Ashe
+			TOTAL_STATS['ashepassive']=(1.1+(TOTAL_STATS['bonus_critchance']*(1+TOTAL_STATS['bonus_critdamage'])))*(parseFloat(TOTAL_STATS['base_attackdamage'])+parseFloat(TOTAL_STATS['bonus_attackdamage']));
+			
+			
+			//Passif Azir
+			if(CHAMPION_ID=="268"){
+				TOTAL_STATS['bonus_attackspeed']=(
+					(CHAMPION_LEVEL)
+					*
+					(
+						parseFloat(ITEMS_STATS["rPercentAttackSpeedModPerLevel"])
+						+
+						parseFloat(RUNES_STATS["rPercentAttackSpeedModPerLevel"])
+					)
+					+
+					parseFloat(ITEMS_STATS["PercentAttackSpeedMod"])
+					+
+					parseFloat(RUNES_STATS["PercentAttackSpeedMod"])
+					+
+					parseFloat(MASTERIES_STATS["PercentAttackSpeedMod"])
+					+
+					parseFloat(parseFloat(TOTAL_STATS['bonus_cd'])*1.25)
+				)
+				*
+				0.625/(
+					1+parseFloat(CHAMPION_STATS["attackspeedoffset"])
+				);
+				
+				if((parseFloat(TOTAL_STATS['base_attackspeed'])+parseFloat(TOTAL_STATS['bonus_attackspeed']))>2.5){
+					$("#attackspeed").html("2.5");
+				}else{
+					$("#attackspeed").html((parseFloat(TOTAL_STATS['base_attackspeed'])+parseFloat(TOTAL_STATS['bonus_attackspeed'])).toFixed(3));
+				}
+			}
+			
+			//Passif Diana
+			if(CHAMPION_ID=="131"){
+				TOTAL_STATS['bonus_attackspeed']=(
+					(CHAMPION_LEVEL)
+					*
+					(
+						parseFloat(ITEMS_STATS["rPercentAttackSpeedModPerLevel"])
+						+
+						parseFloat(RUNES_STATS["rPercentAttackSpeedModPerLevel"])
+					)
+					+
+					parseFloat(ITEMS_STATS["PercentAttackSpeedMod"])
+					+
+					parseFloat(RUNES_STATS["PercentAttackSpeedMod"])
+					+
+					parseFloat(MASTERIES_STATS["PercentAttackSpeedMod"])
+					+0.2
+				)
+				*
+				0.625/(
+					1+parseFloat(CHAMPION_STATS["attackspeedoffset"])
+				);
+				
+				if((parseFloat(TOTAL_STATS['base_attackspeed'])+parseFloat(TOTAL_STATS['bonus_attackspeed']))>2.5){
+					$("#attackspeed").html("2.5");
+				}else{
+					$("#attackspeed").html((parseFloat(TOTAL_STATS['base_attackspeed'])+parseFloat(TOTAL_STATS['bonus_attackspeed'])).toFixed(3));
+				}
+			}
+			
+			//Passif Galio
+			if(CHAMPION_ID=="3"){
+			TOTAL_STATS['bonus_spelldamage']=
+				ITEMS_STATS['FlatMagicDamageMod']
+				+RUNES_STATS['FlatMagicDamageMod']
+				+MASTERIES_STATS['FlatMagicDamageMod']
+				+0.5*(TOTAL_STATS['base_spellblock']+TOTAL_STATS['bonus_spellblock'])
+				+(
+					ITEMS_STATS['rFlatMagicDamageModPerLevel']
+					+RUNES_STATS['rFlatMagicDamageModPerLevel']
+					+MASTERIES_STATS['rFlatMagicDamageModPerLevel']
+				)*(CHAMPION_LEVEL);
+				
+				$("#spelldamage").html(parseFloat(TOTAL_STATS['bonus_spelldamage']).toFixed(0));
+			}
+			
+			//Passif Morgana
+			if(CHAMPION_ID=="25"){
+				var morgana=[10,10,10,10,10,10,15,15,15,15,15,15,20,20,20,20,20,20];
+				
+				TOTAL_STATS['bonus_spellvamp']=0
+					+parseFloat(ITEMS_STATS['PercentSpellVampMod'])
+					+parseFloat(RUNES_STATS['PercentSpellVampMod'])
+					+parseFloat(MASTERIES_STATS['PercentSpellVampMod'])
+					+parseFloat(morgana[CHAMPION_LEVEL])/100;
+					
+				$("#spellvamp").html((parseFloat(TOTAL_STATS['bonus_spellvamp'])*100).toFixed(1)+"%");
+			}
+			
+			
+			//Passif Nasus
+			if(CHAMPION_ID=="75"){
+				var nasus=[10,10,10,10,10,10,15,15,15,15,15,15,20,20,20,20,20,20];
+				
+				TOTAL_STATS['bonus_lifesteal']=0
+					+parseFloat(ITEMS_STATS['PercentLifeStealMod'])
+					+parseFloat(RUNES_STATS['PercentLifeStealMod'])
+					+parseFloat(MASTERIES_STATS['PercentLifeStealMod'])
+					+parseFloat(nasus[CHAMPION_LEVEL])/100;
+					
+				$("#lifesteal").html((parseFloat(TOTAL_STATS['bonus_lifesteal'])*100).toFixed(1)+"%");
+			}
+			
+			//Passif Rammus
+			if(CHAMPION_ID=="33"){
+				
+				TOTAL_STATS['bonus_attackdamage']=
+					ITEMS_STATS['FlatPhysicalDamageMod']
+					+RUNES_STATS['FlatPhysicalDamageMod']
+					+MASTERIES_STATS['FlatPhysicalDamageMod']
+					+(
+						ITEMS_STATS['rFlatPhysicalDamageModPerLevel']
+						+RUNES_STATS['rFlatPhysicalDamageModPerLevel']
+						+MASTERIES_STATS['rFlatPhysicalDamageModPerLevel']
+					)*(CHAMPION_LEVEL)
+					+0.25*(parseFloat(TOTAL_STATS['base_armor'])+parseFloat(TOTAL_STATS['bonus_armor']));
+			
+				$("#attackdamage").html((parseFloat(TOTAL_STATS['base_attackdamage'])+parseFloat(TOTAL_STATS['bonus_attackdamage'])).toFixed(2));
+			
+			}
+			
+			//Passif Shyvana
+			if(CHAMPION_ID=="102"){
+				var shyvana=[5,5,5,5,5,10,10,10,10,10,15,15,15,15,15,20,20,20];
+				
+				TOTAL_STATS['bonus_armor']=
+					(
+						ITEMS_STATS['FlatArmorMod']
+						+RUNES_STATS['FlatArmorMod']
+						+RUNES_STATS['rFlatArmorModPerLevel']*(CHAMPION_LEVEL)
+					)*(
+						1
+						+MASTERIES_STATS['rPercentBonusArmorMod']
+					)
+					+parseFloat(shyvana[CHAMPION_LEVEL]);
+				
+				$("#armor").html((parseFloat(TOTAL_STATS['base_armor'])+parseFloat(TOTAL_STATS['bonus_armor'])).toFixed(2));
+				console:
+				TOTAL_STATS['bonus_spellblock']=
+					(
+						ITEMS_STATS['FlatSpellBlockMod']
+						+RUNES_STATS['FlatSpellBlockMod']
+						+MASTERIES_STATS['FlatSpellBlockMod']
+						+(
+							ITEMS_STATS['rFlatSpellBlockModPerLevel']
+							+RUNES_STATS['rFlatSpellBlockModPerLevel']
+							+MASTERIES_STATS['rFlatSpellBlockModPerLevel']
+						)*(CHAMPION_LEVEL)
+					)*(
+						1
+						+MASTERIES_STATS['rPercentBonusSpellBlockMod']
+					)
+					+parseFloat(shyvana[CHAMPION_LEVEL]);
+					
+				$("#spellblock").html((parseFloat(TOTAL_STATS['base_spellblock'])+parseFloat(TOTAL_STATS['bonus_spellblock'])).toFixed(2));
+			}
+			
+			//Passif Singed
+			if(CHAMPION_ID=="27"){
+					
+				TOTAL_STATS['bonus_hp']=
+					(
+						ITEMS_STATS['FlatHPPoolMod']
+						+RUNES_STATS['FlatHPPoolMod']
+						+MASTERIES_STATS['FlatHPPoolMod']
+						+(
+							ITEMS_STATS['rFlatHPModPerLevel']
+							+RUNES_STATS['rFlatHPModPerLevel']
+						)*(CHAMPION_LEVEL)
+						+0.25*(parseFloat(TOTAL_STATS['base_mp'])+parseFloat(TOTAL_STATS['bonus_mp']))
+					)*(
+						1
+						+ITEMS_STATS['PercentHPPoolMod']
+						+RUNES_STATS['PercentHPPoolMod']
+						+MASTERIES_STATS['PercentHPPoolMod']
+					);
+					
+				$("#hp").html((parseFloat(TOTAL_STATS['base_hp'])+parseFloat(TOTAL_STATS['bonus_hp'])).toFixed(0));
+			}
+			
+			//Passif Tristana
+			if(CHAMPION_ID=="18"){
+				var tristana=[0,7,14,21,28,35,42,49,56,63,70,77,84,91,98,105,112,119];
+				
+				TOTAL_STATS['bonus_attackrange']=tristana[CHAMPION_LEVEL];
+				
+				
+				$("#attackrange").html((parseFloat(TOTAL_STATS['base_attackrange'])+parseFloat(TOTAL_STATS['bonus_attackrange'])));
+			}
+			
+			
+			
 			$(".partype").html(CHAMPION_STATS["partype"]);
 			
 			Canis.LoL.TheoryCrafter.Champions.updateRatios();
 		}
 	}
 	this.updateStats=updateStats;
+	
+	function growthFormula(coeff){
+		return coeff*((7/400)*((CHAMPION_LEVEL+1)*(CHAMPION_LEVEL+1)-1)+(267/400)*((CHAMPION_LEVEL+1)-1));
+	}
 	
 	
 	

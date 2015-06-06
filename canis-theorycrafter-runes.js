@@ -9,6 +9,10 @@
 		- Sauvegarde en cookie d'une page
 		- Chargement de la page en cookie
 		- Gestion des stats
+		
+	v1.1 - 02/06/2015
+		Fonctions
+		- Ajout de la fonction d'importation des pages
 	
 	Nécessite une balise #bg-runes, une #runes_list, #runes_buttons et une #runes_effects
 */
@@ -30,6 +34,8 @@ if(typeof Canis.LoL.TheoryCrafter.Runes == 'undefined') Canis.LoL.TheoryCrafter.
 	var EMPTY_RUNES_PAGE={"name":"Page runes","red":0,"yellow":0,"blue":0,"black":0,"runes":[]};
 	
 	
+	//Pages importées
+	var ALL_RUNES_PAGES={};
 	
 	function construct() {
 		a.documentReady(initialize);
@@ -52,6 +58,10 @@ if(typeof Canis.LoL.TheoryCrafter.Runes == 'undefined') Canis.LoL.TheoryCrafter.
 		$("#runes_effects").html('Effets : ');
 		$("#runes_buttons").append('<button class="clear_runes_page btn btn-default">Effacer</button>');
 		$("#runes_buttons").append('<button class="save_runes_page btn btn-default">Sauvegarder</button>');
+		$("#runes_buttons").append('<br /><br /><select id="servor_select_runes" class="form-control"><option value="euw">EUW</option><option value="na">NA</option><option value="eune">EUNE</option><option value="br">BR</option><option value="lan">LAN</option><option value="las">LAS</option><option value="oce">OCE</option></select><br />');
+		$("#runes_buttons").append('<input type="text" class="form-control" id="summoner_select_runes" placeholder="Invocateur" maxlength="20"><br />');
+		$("#runes_buttons").append('<button class="import_runes btn btn-default">Importer</button><br /><br />');
+		$("#runes_buttons").append('<div id="runes_pages_list"></div>');
 	
 		$.ajax({
 			url: Canis.LoL.TheoryCrafter.getQuery()+"index.php/tc/getRunes",
@@ -115,6 +125,22 @@ if(typeof Canis.LoL.TheoryCrafter.Runes == 'undefined') Canis.LoL.TheoryCrafter.
 		$(document).on("click",".save_runes_page",function(e){
 			
 			savePage();
+			
+		});
+		
+		
+		$(document).on("click",".import_runes",function(e){
+			
+			importRunes();
+			
+		});
+		
+		
+		$(document).on("click",".runes_page_button",function(e){
+			
+			clearRunesPage();
+			
+			useImportedPage(ALL_RUNES_PAGES[$(e.target).data("page")]);
 			
 		});
 	}
@@ -347,6 +373,7 @@ if(typeof Canis.LoL.TheoryCrafter.Runes == 'undefined') Canis.LoL.TheoryCrafter.
 	
 	
 	function constructSavedPage(){
+		
 		var data=JSON.parse(ALL_RUNES);
 		var i;
 		for(var a in page["runes"]){
@@ -370,6 +397,57 @@ if(typeof Canis.LoL.TheoryCrafter.Runes == 'undefined') Canis.LoL.TheoryCrafter.
 			}
 		}
 		updateRunes();
+	}
+	
+	
+	//Importe les runes d'un invocateur
+	function importRunes(){
+		
+		var servor=$("#servor_select_runes").val();
+		var summ=$("#summoner_select_runes").val();
+		
+		$.ajax({
+			url: Canis.LoL.TheoryCrafter.getQuery()+"index.php/tc/getRunesFromSummoner",
+			method:"POST",
+			data:{
+				"servor":servor,
+				"summoner":summ
+			},
+			success:function(data){
+				data=JSON.parse(data);
+				// console.log(data);
+				
+				
+				for(var i in data){
+					$("#runes_pages_list").append('<button class="btn  btn-default runes_page_button" data-page="'+data[i]['id']+'">'+data[i]['name']+'</button>');
+					ALL_RUNES_PAGES[data[i]['id']]={};
+					ALL_RUNES_PAGES[data[i]['id']]['runes']={};
+					if(data[i]['slots']!=null){
+						for(var j in data[i]['slots']){
+							ALL_RUNES_PAGES[data[i]['id']]['runes'][data[i]['slots'][j]['runeSlotId']]=data[i]['slots'][j]['runeId'];
+						}
+					}
+				}
+			}
+		});
+		
+	}
+	
+	//Remplace la page actuelle par celle importée sélectionnée
+	function useImportedPage(runesId){
+		
+		var runes=JSON.parse(ALL_RUNES);
+		
+		for(var i in runesId['runes']){
+			if(runes[runesId['runes'][i]]['type']=="red")page['red']++;
+			if(runes[runesId['runes'][i]]['type']=="yellow")page['yellow']++;
+			if(runes[runesId['runes'][i]]['type']=="blue")page['blue']++;
+			if(runes[runesId['runes'][i]]['type']=="black")page['black']++;
+			page['runes'][i]=runesId['runes'][i];
+		
+		}
+		
+		constructSavedPage()
 	}
 	
 	
