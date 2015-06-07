@@ -20,6 +20,10 @@
 		
 	06/06/2015
 		- Ajout de la fonction growthFormula et correction du calcul des stats de base par niveau
+		- Ajout des exceptions pour Morgana et Nasus
+		
+	07/06/2015
+		- Ajout des exceptions pour Rammus, Shyvana,Singed, Tristana, Vladimir et Yasuo
 	
 	Fonctionne avec JQuery et Bootstrap
 	
@@ -43,7 +47,7 @@ if(typeof Canis.LoL.TheoryCrafter == 'undefined') Canis.LoL.TheoryCrafter = new 
 	
 	var DDRAGON="5.10.1";
 	
-	var BASE_STATS='{"rFlatArmorModPerLevel":0,"rFlatArmorPenetrationMod":0,"rFlatArmorPenetrationModPerLevel":0,"rFlatCritChanceModPerLevel":0,"rFlatCritDamageModPerLevel":0,"rFlatEnergyRegenModPerLevel":0,"rFlatDodgeMod":0,"rFlatDodgeModPerLevel":0,"rFlatGoldPer10Mod":0,"rFlatHPModPerLevel":0,"rFlatHPRegenModPerLevel":0,"rFlatMPRegenModPerLevel":0,"rFlatMagicDamageModPerLevel":0,"rFlatMagicPenetrationMod":0,"rFlatMagicPenetrationModPerLevel":0,"rFlatMPModPerLevel":0,"rFlatEnergyModPerLevel":0,"rFlatMovementSpeedModPerLevel":0,"rFlatPhysicalDamageModPerLevel":0,"rFlatSpellBlockModPerLevel":0,"rFlatTimeDeadMod":0,"rFlatTimeDeadModPerLevel":0,"rPercentArmorPenetrationMod":0,"rPercentArmorPenetrationModPerLevel":0,"rPercentAttackSpeedModPerLevel":0,"rPercentCooldownMod":0,"rPercentCooldownModPerLevel":0,"rPercentMagicPenetrationMod":0,"rPercentMagicPenetrationModPerLevel":0,"rPercentMovementSpeedModPerLevel":0,"rPercentTimeDeadMod":0,"rPercentTimeDeadModPerLevel":0,"FlatArmorMod":0,"FlatAttackSpeedMod":0,"FlatBlockMod":0,"FlatCritChanceMod":0,"FlatCritDamageMod":0,"FlatEnergyRegenMod":0,"FlatEnergyPoolMod":0,"FlatEXPBonus":0,"FlatHPPoolMod":0,"FlatHPRegenMod":0,"FlatMPPoolMod":0,"FlatMPRegenMod":0,"FlatMagicDamageMod":0,"FlatMovementSpeedMod":0,"FlatPhysicalDamageMod":0,"FlatSpellBlockMod":0,"PercentArmorMod":0,"PercentAttackSpeedMod":0,"PercentBlockMod":0,"PercentCritChanceMod":0,"PercentCritDamageMod":0,"PercentDodgeMod":0,"PercentEXPBonus":0,"PercentHPPoolMod":0,"PercentHPRegenMod":0,"PercentMPPoolMod":0,"PercentMPRegenMod":0,"PercentMagicDamageMod":0,"PercentMovementSpeedMod":0,"PercentPhysicalDamageMod":0,"PercentSpellBlockMod":0,"PercentSpellVampMod":0,"PercentLifeStealMod":0,"PercentBonusPhysicalDamage":0,"rPercentBonusArmorMod":0,"rPercentBonusSpellBlockMod":0,"TenacityMod":0,"ashepassive":0}';
+	var BASE_STATS='{"rFlatArmorModPerLevel":0,"rFlatArmorPenetrationMod":0,"rFlatArmorPenetrationModPerLevel":0,"rFlatCritChanceModPerLevel":0,"rFlatCritDamageModPerLevel":0,"rFlatEnergyRegenModPerLevel":0,"rFlatDodgeMod":0,"rFlatDodgeModPerLevel":0,"rFlatGoldPer10Mod":0,"rFlatHPModPerLevel":0,"rFlatHPRegenModPerLevel":0,"rFlatMPRegenModPerLevel":0,"rFlatMagicDamageModPerLevel":0,"rFlatMagicPenetrationMod":0,"rFlatMagicPenetrationModPerLevel":0,"rFlatMPModPerLevel":0,"rFlatEnergyModPerLevel":0,"rFlatMovementSpeedModPerLevel":0,"rFlatPhysicalDamageModPerLevel":0,"rFlatSpellBlockModPerLevel":0,"rFlatTimeDeadMod":0,"rFlatTimeDeadModPerLevel":0,"rPercentArmorPenetrationMod":0,"rPercentArmorPenetrationModPerLevel":0,"rPercentAttackSpeedModPerLevel":0,"rPercentCooldownMod":0,"rPercentCooldownModPerLevel":0,"rPercentMagicPenetrationMod":0,"rPercentMagicPenetrationModPerLevel":0,"rPercentMovementSpeedModPerLevel":0,"rPercentTimeDeadMod":0,"rPercentTimeDeadModPerLevel":0,"FlatArmorMod":0,"FlatAttackSpeedMod":0,"FlatBlockMod":0,"FlatCritChanceMod":0,"FlatCritDamageMod":0,"FlatEnergyRegenMod":0,"FlatEnergyPoolMod":0,"FlatEXPBonus":0,"FlatHPPoolMod":0,"FlatHPRegenMod":0,"FlatMPPoolMod":0,"FlatMPRegenMod":0,"FlatMagicDamageMod":0,"FlatMovementSpeedMod":0,"FlatPhysicalDamageMod":0,"FlatSpellBlockMod":0,"PercentArmorMod":0,"PercentAttackSpeedMod":0,"PercentBlockMod":0,"PercentCritChanceMod":0,"PercentCritDamageMod":0,"PercentDodgeMod":0,"PercentEXPBonus":0,"PercentHPPoolMod":0,"PercentHPRegenMod":0,"PercentMPPoolMod":0,"PercentMPRegenMod":0,"PercentMagicDamageMod":0,"PercentMovementSpeedMod":0,"PercentPhysicalDamageMod":0,"PercentSpellBlockMod":0,"PercentSpellVampMod":0,"PercentLifeStealMod":0,"PercentBonusPhysicalDamage":0,"rPercentBonusArmorMod":0,"rPercentBonusSpellBlockMod":0,"TenacityMod":0,"ashepassive":0,"HPPoolVlad":0,"SpellDamageVlad":0}';
 	
 	//Initialisation des stats
 	var ITEMS_STATS={"rFlatArmorModPerLevel":0,"rFlatArmorPenetrationMod":0,"rFlatArmorPenetrationModPerLevel":0,"rFlatCritChanceModPerLevel":0,"rFlatCritDamageModPerLevel":0,"rFlatEnergyRegenModPerLevel":0,"rFlatDodgeMod":0,"rFlatDodgeModPerLevel":0,"rFlatGoldPer10Mod":0,"rFlatHPModPerLevel":0,"rFlatHPRegenModPerLevel":0,"rFlatMPRegenModPerLevel":0,"rFlatMagicDamageModPerLevel":0,"rFlatMagicPenetrationMod":0,"rFlatMagicPenetrationModPerLevel":0,"rFlatMPModPerLevel":0,"rFlatEnergyModPerLevel":0,"rFlatMovementSpeedModPerLevel":0,"rFlatPhysicalDamageModPerLevel":0,"rFlatSpellBlockModPerLevel":0,"rFlatTimeDeadMod":0,"rFlatTimeDeadModPerLevel":0,"rPercentArmorPenetrationMod":0,"rPercentArmorPenetrationModPerLevel":0,"rPercentAttackSpeedModPerLevel":0,"rPercentCooldownMod":0,"rPercentCooldownModPerLevel":0,"rPercentMagicPenetrationMod":0,"rPercentMagicPenetrationModPerLevel":0,"rPercentMovementSpeedModPerLevel":0,"rPercentTimeDeadMod":0,"rPercentTimeDeadModPerLevel":0,"FlatArmorMod":0,"FlatAttackSpeedMod":0,"FlatBlockMod":0,"FlatCritChanceMod":0,"FlatCritDamageMod":0,"FlatEnergyRegenMod":0,"FlatEnergyPoolMod":0,"FlatEXPBonus":0,"FlatHPPoolMod":0,"FlatHPRegenMod":0,"FlatMPPoolMod":0,"FlatMPRegenMod":0,"FlatMagicDamageMod":0,"FlatMovementSpeedMod":0,"FlatPhysicalDamageMod":0,"FlatSpellBlockMod":0,"PercentArmorMod":0,"PercentAttackSpeedMod":0,"PercentBlockMod":0,"PercentCritChanceMod":0,"PercentCritDamageMod":0,"PercentDodgeMod":0,"PercentEXPBonus":0,"PercentHPPoolMod":0,"PercentHPRegenMod":0,"PercentMPPoolMod":0,"PercentMPRegenMod":0,"PercentMagicDamageMod":0,"PercentMovementSpeedMod":0,"PercentPhysicalDamageMod":0,"PercentSpellBlockMod":0,"PercentSpellVampMod":0,"PercentLifeStealMod":0,"TenacityMod":0};
@@ -54,7 +58,7 @@ if(typeof Canis.LoL.TheoryCrafter == 'undefined') Canis.LoL.TheoryCrafter = new 
 	
 	var CHAMPION_STATS;
 	
-	var TOTAL_STATS={"rFlatArmorModPerLevel":0,"rFlatArmorPenetrationMod":0,"rFlatArmorPenetrationModPerLevel":0,"rFlatCritChanceModPerLevel":0,"rFlatCritDamageModPerLevel":0,"rFlatEnergyRegenModPerLevel":0,"rFlatDodgeMod":0,"rFlatDodgeModPerLevel":0,"rFlatGoldPer10Mod":0,"rFlatHPModPerLevel":0,"rFlatHPRegenModPerLevel":0,"rFlatMPRegenModPerLevel":0,"rFlatMagicDamageModPerLevel":0,"rFlatMagicPenetrationMod":0,"rFlatMagicPenetrationModPerLevel":0,"rFlatMPModPerLevel":0,"rFlatEnergyModPerLevel":0,"rFlatMovementSpeedModPerLevel":0,"rFlatPhysicalDamageModPerLevel":0,"rFlatSpellBlockModPerLevel":0,"rFlatTimeDeadMod":0,"rFlatTimeDeadModPerLevel":0,"rPercentArmorPenetrationMod":0,"rPercentArmorPenetrationModPerLevel":0,"rPercentAttackSpeedModPerLevel":0,"rPercentCooldownMod":0,"rPercentCooldownModPerLevel":0,"rPercentMagicPenetrationMod":0,"rPercentMagicPenetrationModPerLevel":0,"rPercentMovementSpeedModPerLevel":0,"rPercentTimeDeadMod":0,"rPercentTimeDeadModPerLevel":0,"FlatArmorMod":0,"FlatAttackSpeedMod":0,"FlatBlockMod":0,"FlatCritChanceMod":0,"FlatCritDamageMod":0,"FlatEnergyRegenMod":0,"FlatEnergyPoolMod":0,"FlatEXPBonus":0,"FlatHPPoolMod":0,"FlatHPRegenMod":0,"FlatMPPoolMod":0,"FlatMPRegenMod":0,"FlatMagicDamageMod":0,"FlatMovementSpeedMod":0,"FlatPhysicalDamageMod":0,"FlatSpellBlockMod":0,"PercentArmorMod":0,"PercentAttackSpeedMod":0,"PercentBlockMod":0,"PercentCritChanceMod":0,"PercentCritDamageMod":0,"PercentDodgeMod":0,"PercentEXPBonus":0,"PercentHPPoolMod":0,"PercentHPRegenMod":0,"PercentMPPoolMod":0,"PercentMPRegenMod":0,"PercentMagicDamageMod":0,"PercentMovementSpeedMod":0,"PercentPhysicalDamageMod":0,"PercentSpellBlockMod":0,"PercentSpellVampMod":0,"PercentLifeStealMod":0,"PercentBonusPhysicalDamage":0,"rPercentBonusArmorMod":0,"rPercentBonusSpellBlockMod":0,"TenacityMod":0,"ashepassive":0};
+	var TOTAL_STATS={"rFlatArmorModPerLevel":0,"rFlatArmorPenetrationMod":0,"rFlatArmorPenetrationModPerLevel":0,"rFlatCritChanceModPerLevel":0,"rFlatCritDamageModPerLevel":0,"rFlatEnergyRegenModPerLevel":0,"rFlatDodgeMod":0,"rFlatDodgeModPerLevel":0,"rFlatGoldPer10Mod":0,"rFlatHPModPerLevel":0,"rFlatHPRegenModPerLevel":0,"rFlatMPRegenModPerLevel":0,"rFlatMagicDamageModPerLevel":0,"rFlatMagicPenetrationMod":0,"rFlatMagicPenetrationModPerLevel":0,"rFlatMPModPerLevel":0,"rFlatEnergyModPerLevel":0,"rFlatMovementSpeedModPerLevel":0,"rFlatPhysicalDamageModPerLevel":0,"rFlatSpellBlockModPerLevel":0,"rFlatTimeDeadMod":0,"rFlatTimeDeadModPerLevel":0,"rPercentArmorPenetrationMod":0,"rPercentArmorPenetrationModPerLevel":0,"rPercentAttackSpeedModPerLevel":0,"rPercentCooldownMod":0,"rPercentCooldownModPerLevel":0,"rPercentMagicPenetrationMod":0,"rPercentMagicPenetrationModPerLevel":0,"rPercentMovementSpeedModPerLevel":0,"rPercentTimeDeadMod":0,"rPercentTimeDeadModPerLevel":0,"FlatArmorMod":0,"FlatAttackSpeedMod":0,"FlatBlockMod":0,"FlatCritChanceMod":0,"FlatCritDamageMod":0,"FlatEnergyRegenMod":0,"FlatEnergyPoolMod":0,"FlatEXPBonus":0,"FlatHPPoolMod":0,"FlatHPRegenMod":0,"FlatMPPoolMod":0,"FlatMPRegenMod":0,"FlatMagicDamageMod":0,"FlatMovementSpeedMod":0,"FlatPhysicalDamageMod":0,"FlatSpellBlockMod":0,"PercentArmorMod":0,"PercentAttackSpeedMod":0,"PercentBlockMod":0,"PercentCritChanceMod":0,"PercentCritDamageMod":0,"PercentDodgeMod":0,"PercentEXPBonus":0,"PercentHPPoolMod":0,"PercentHPRegenMod":0,"PercentMPPoolMod":0,"PercentMPRegenMod":0,"PercentMagicDamageMod":0,"PercentMovementSpeedMod":0,"PercentPhysicalDamageMod":0,"PercentSpellBlockMod":0,"PercentSpellVampMod":0,"PercentLifeStealMod":0,"PercentBonusPhysicalDamage":0,"rPercentBonusArmorMod":0,"rPercentBonusSpellBlockMod":0,"TenacityMod":0,"ashepassive":0,"HPPoolVlad":0,"SpellDamageVlad":0};
 	
 	var CHAMPION_LEVEL;
 	
@@ -811,6 +815,79 @@ if(typeof Canis.LoL.TheoryCrafter == 'undefined') Canis.LoL.TheoryCrafter = new 
 				
 				
 				$("#attackrange").html((parseFloat(TOTAL_STATS['base_attackrange'])+parseFloat(TOTAL_STATS['bonus_attackrange'])));
+			}
+			
+			//Passif Vladimir
+			if(CHAMPION_ID=="8"){
+				TOTAL_STATS['SpellDamageVlad']=TOTAL_STATS['bonus_spelldamage'];
+				TOTAL_STATS['HPPoolVlad']=TOTAL_STATS['bonus_hp'];
+				
+				
+				TOTAL_STATS['bonus_spelldamage']=
+					ITEMS_STATS['FlatMagicDamageMod']
+					+RUNES_STATS['FlatMagicDamageMod']
+					+MASTERIES_STATS['FlatMagicDamageMod']
+					+(
+						ITEMS_STATS['rFlatMagicDamageModPerLevel']
+						+RUNES_STATS['rFlatMagicDamageModPerLevel']
+						+MASTERIES_STATS['rFlatMagicDamageModPerLevel']
+					)*(CHAMPION_LEVEL)
+					+0.025*parseFloat(TOTAL_STATS['bonus_hp']);
+					
+				$("#spelldamage").html(parseFloat(TOTAL_STATS['bonus_spelldamage']).toFixed(0));
+				
+				
+				TOTAL_STATS['bonus_hp']=
+					(
+						ITEMS_STATS['FlatHPPoolMod']
+						+RUNES_STATS['FlatHPPoolMod']
+						+MASTERIES_STATS['FlatHPPoolMod']
+						+(
+							ITEMS_STATS['rFlatHPModPerLevel']
+							+RUNES_STATS['rFlatHPModPerLevel']
+						)*(CHAMPION_LEVEL)
+					)*(
+						1
+						+ITEMS_STATS['PercentHPPoolMod']
+						+RUNES_STATS['PercentHPPoolMod']
+						+MASTERIES_STATS['PercentHPPoolMod']
+					)
+					+1.4*parseFloat(TOTAL_STATS['SpellDamageVlad']);
+					
+				$("#hp").html((parseFloat(TOTAL_STATS['base_hp'])+parseFloat(TOTAL_STATS['bonus_hp'])).toFixed(0));
+				
+			}
+			
+			
+			//Passif Yasuo
+			if(CHAMPION_ID=="157"){
+				
+				TOTAL_STATS['bonus_critdamage']=(
+						2
+						+parseFloat(ITEMS_STATS['FlatCritDamageMod'])
+						+parseFloat(RUNES_STATS['FlatCritDamageMod'])
+						+(
+							parseFloat(ITEMS_STATS['rFlatCritDamageModPerLevel'])
+							+parseFloat(RUNES_STATS['rFlatCritDamageModPerLevel'])
+						)*(CHAMPION_LEVEL)
+					)*0.9;
+					
+				$("#dcc").html(((parseFloat(TOTAL_STATS['bonus_critdamage'])*100)).toFixed(1)+"%");
+				
+				
+				TOTAL_STATS['bonus_critchance']=(
+						0
+						+parseFloat(ITEMS_STATS['FlatCritChanceMod'])
+						+parseFloat(RUNES_STATS['FlatCritChanceMod'])
+						+(
+							parseFloat(ITEMS_STATS['rFlatCritChanceModPerLevel'])
+							+parseFloat(RUNES_STATS['rFlatCritChanceModPerLevel'])
+						)*(CHAMPION_LEVEL)
+					)*2;
+				if(TOTAL_STATS['bonus_critchance']>1)TOTAL_STATS['bonus_critchance']=1;
+					
+				$("#ccc").html((parseFloat(TOTAL_STATS['bonus_critchance'])*100).toFixed(1)+"%");
+				
 			}
 			
 			

@@ -26,10 +26,13 @@
 		- Ajout de ratios (cooldown et ashe)
 		
 	04/06/2015
-		- Ajout du ratios level
+		- Ajout du ratio level
 		
 	05/06/2015
 		- Ajout du coefficient par level
+		
+	07/06/2015
+		- Ajout du ratios spelblock, vladhp et vladspelldamage
 	
 	
 	Nécessite divisions #champions_list, #champion_selected, #stats_1, #stats_2 et #champion_spells
@@ -352,6 +355,11 @@ if(typeof Canis.LoL.TheoryCrafter.Champions == 'undefined') Canis.LoL.TheoryCraf
 				$(this).html((parseFloat($(this).data("coeff"))*(champ_stats['base_mp']+champ_stats['bonus_mp'])).toFixed(2));
 			}
 			
+			//Résistance magique
+			if($(this).data("link")=="spellblock"){
+				$(this).html((parseFloat($(this).data("coeff"))*(champ_stats['base_spellblock']+champ_stats['bonus_spellblock'])).toFixed(0));
+			}
+			
 			//Résistance magique supplémentaire
 			if($(this).data("link")=="bonusspellblock"){
 				$(this).html((parseFloat($(this).data("coeff"))*champ_stats['bonus_spellblock']).toFixed(0));
@@ -370,6 +378,14 @@ if(typeof Canis.LoL.TheoryCrafter.Champions == 'undefined') Canis.LoL.TheoryCraf
 			//Passif de Ashe
 			if($(this).data("link")=="ashepassive"){
 				$(this).html((parseFloat($(this).data("coeff"))*champ_stats['ashepassive']).toFixed(0));
+			}
+			
+			//Passif de Vladimir
+			if($(this).data("link")=="vladhp"){
+				$(this).html((parseFloat($(this).data("coeff"))*champ_stats['HPPoolVlad']).toFixed(0));
+			}
+			if($(this).data("link")=="vladspelldamage"){
+				$(this).html((parseFloat($(this).data("coeff"))*champ_stats['SpellDamageVlad']).toFixed(0));
 			}
 			
 		});
