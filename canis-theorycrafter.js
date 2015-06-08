@@ -24,6 +24,9 @@
 		
 	07/06/2015
 		- Ajout des exceptions pour Rammus, Shyvana,Singed, Tristana, Vladimir et Yasuo
+		
+	09/06/2015
+		- Ajout des exceptions pour Gnar
 	
 	Fonctionne avec JQuery et Bootstrap
 	
@@ -304,8 +307,7 @@ if(typeof Canis.LoL.TheoryCrafter == 'undefined') Canis.LoL.TheoryCrafter = new 
 					1+parseFloat(CHAMPION_STATS["attackspeedoffset"])
 				)+(
 					growthFormula(parseFloat(CHAMPION_STATS["attackspeedperlevel"]))
-				)
-				*
+				)*
 				0.625/(
 					1+parseFloat(CHAMPION_STATS["attackspeedoffset"])
 				)
@@ -703,6 +705,92 @@ if(typeof Canis.LoL.TheoryCrafter == 'undefined') Canis.LoL.TheoryCrafter = new 
 				$("#spelldamage").html(parseFloat(TOTAL_STATS['bonus_spelldamage']).toFixed(0));
 			}
 			
+			//Passif Gnar
+			if(CHAMPION_ID=="150"){
+			
+				var gnar_mvt=[10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,26,28,30]
+				
+				TOTAL_STATS['base_movespeed']=parseFloat(CHAMPION_STATS["movespeed"])+parseFloat(gnar_mvt[CHAMPION_LEVEL]);
+				TOTAL_STATS['bonus_movespeed']=
+					parseFloat(CHAMPION_STATS["movespeed"])
+					+parseFloat(ITEMS_STATS['FlatMovementSpeedMod'])
+					+parseFloat(RUNES_STATS['FlatMovementSpeedMod'])
+					+parseFloat(MASTERIES_STATS['FlatMovementSpeedMod'])
+					+(
+						parseFloat(ITEMS_STATS['rFlatMovementSpeedModPerLevel'])
+						+parseFloat(RUNES_STATS['rFlatMovementSpeedModPerLevel'])
+					)*(CHAMPION_LEVEL);
+				TOTAL_STATS['bonus_movespeed']=
+					TOTAL_STATS['bonus_movespeed']
+					+TOTAL_STATS['bonus_movespeed']*(
+						parseFloat(RUNES_STATS['PercentMovementSpeedMod'])
+						+parseFloat(MASTERIES_STATS['PercentMovementSpeedMod'])
+					);
+				
+				TOTAL_STATS['bonus_movespeed']=
+					parseFloat(TOTAL_STATS['bonus_movespeed'])
+					+parseFloat(TOTAL_STATS['bonus_movespeed'])*(
+						parseFloat(ITEMS_STATS['PercentMovementSpeedMod'])
+						+parseFloat(ITEMS_STATS['rPercentMovementSpeedModPerLevel'])*(CHAMPION_LEVEL)
+					);
+				if(TOTAL_STATS['bonus_movespeed']>415){
+					TOTAL_STATS['bonus_movespeed']=(TOTAL_STATS['bonus_movespeed']-415)*0.8+415;
+				}
+				if(TOTAL_STATS['bonus_movespeed']>490){
+					TOTAL_STATS['bonus_movespeed']=(TOTAL_STATS['bonus_movespeed']-490)*0.5+490;
+				}
+				TOTAL_STATS['bonus_movespeed']=TOTAL_STATS['bonus_movespeed']-CHAMPION_STATS["movespeed"];
+				
+				$("#movespeed").html((parseFloat(TOTAL_STATS['base_movespeed'])+parseFloat(TOTAL_STATS['bonus_movespeed'])).toFixed(0));
+				
+				
+				
+				TOTAL_STATS['bonus_attackrange']=245+(CHAMPION_LEVEL*5+5);
+				
+				$("#attackrange").html((parseFloat(TOTAL_STATS['base_attackrange'])+parseFloat(TOTAL_STATS['bonus_attackrange'])));
+				
+				TOTAL_STATS['base_attackspeed']=(
+					0.625/(
+						1+parseFloat(CHAMPION_STATS["attackspeedoffset"])
+					)+(
+						growthFormula(parseFloat(CHAMPION_STATS["attackspeedperlevel"]))
+					)*
+					0.625/(
+						1+parseFloat(CHAMPION_STATS["attackspeedoffset"])
+					)
+					/100
+				).toFixed(3);
+				TOTAL_STATS['bonus_attackspeed']=(
+						(CHAMPION_LEVEL)
+						*
+						(
+							parseFloat(ITEMS_STATS["rPercentAttackSpeedModPerLevel"])
+							+
+							parseFloat(RUNES_STATS["rPercentAttackSpeedModPerLevel"])
+						)
+						+
+						parseFloat(ITEMS_STATS["PercentAttackSpeedMod"])
+						+
+						parseFloat(RUNES_STATS["PercentAttackSpeedMod"])
+						+
+						parseFloat(MASTERIES_STATS["PercentAttackSpeedMod"])
+						+
+						// (CHAMPION_LEVEL+1)*
+						0.055
+					)
+					*
+					0.625/(
+						1+parseFloat(CHAMPION_STATS["attackspeedoffset"])
+					);
+					
+				if((parseFloat(TOTAL_STATS['base_attackspeed'])+parseFloat(TOTAL_STATS['bonus_attackspeed']))>2.5){
+					$("#attackspeed").html("2.5");
+				}else{
+					$("#attackspeed").html((parseFloat(TOTAL_STATS['base_attackspeed'])+parseFloat(TOTAL_STATS['bonus_attackspeed'])).toFixed(3));
+				}
+				
+			}
+			
 			//Passif Morgana
 			if(CHAMPION_ID=="25"){
 				var morgana=[10,10,10,10,10,10,15,15,15,15,15,15,20,20,20,20,20,20];
@@ -902,7 +990,6 @@ if(typeof Canis.LoL.TheoryCrafter == 'undefined') Canis.LoL.TheoryCrafter = new 
 	function growthFormula(coeff){
 		return coeff*((7/400)*((CHAMPION_LEVEL+1)*(CHAMPION_LEVEL+1)-1)+(267/400)*((CHAMPION_LEVEL+1)-1));
 	}
-	
 	
 	
 	//Helper
